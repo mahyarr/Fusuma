@@ -81,7 +81,7 @@ public enum FusumaMode {
 }
 
 //@objc public class FusumaViewController: UIViewController, FSCameraViewDelegate, FSAlbumViewDelegate {
-public class FusumaViewController: UIViewController {
+open class FusumaViewController: UIViewController {
 
     public var hasVideo = false
     public var cropHeightRatio: CGFloat = 1
@@ -115,7 +115,7 @@ public class FusumaViewController: UIViewController {
     
     public weak var delegate: FusumaDelegate? = nil
     
-    override public func loadView() {
+    override open func loadView() {
         
         if let view = UINib(nibName: "FusumaViewController", bundle: Bundle(for: self.classForCoder)).instantiate(withOwner: self, options: nil).first as? UIView {
             
@@ -123,7 +123,7 @@ public class FusumaViewController: UIViewController {
         }
     }
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
     
         self.view.backgroundColor = fusumaBackgroundColor
@@ -207,12 +207,12 @@ public class FusumaViewController: UIViewController {
         }
     }
     
-    override public func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
     }
 
-    override public func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         albumView.frame  = CGRect(origin: CGPoint.zero, size: photoLibraryViewerContainer.frame.size)
@@ -232,12 +232,12 @@ public class FusumaViewController: UIViewController {
         }
     }
     
-    public override func viewWillDisappear(_ animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.stopAll()
     }
 
-    override public var prefersStatusBarHidden : Bool {
+    override open var prefersStatusBarHidden : Bool {
         
         return true
     }
