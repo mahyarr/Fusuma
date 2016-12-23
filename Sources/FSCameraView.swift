@@ -49,24 +49,18 @@ final class FSCameraView: UIView, UIGestureRecognizerDelegate {
         
         let bundle = Bundle(for: self.classForCoder)
         
-        flashOnImage = fusumaFlashOnImage != nil ? fusumaFlashOnImage : UIImage(named: "ic_flash_on", in: bundle, compatibleWith: nil)
-        flashOffImage = fusumaFlashOffImage != nil ? fusumaFlashOffImage : UIImage(named: "ic_flash_off", in: bundle, compatibleWith: nil)
-        let flipImage = fusumaFlipImage != nil ? fusumaFlipImage : UIImage(named: "ic_loop", in: bundle, compatibleWith: nil)
-        let shotImage = fusumaShotImage != nil ? fusumaShotImage : UIImage(named: "ic_radio_button_checked", in: bundle, compatibleWith: nil)
-        
-        if(fusumaTintIcons) {
-            flashButton.tintColor = fusumaBaseTintColor
-            flipButton.tintColor  = fusumaBaseTintColor
-            shotButton.tintColor  = fusumaBaseTintColor
+        flashOnImage = fusumaFlashOnImage != nil ? fusumaFlashOnImage : UIImage(named: "flash_on", in: bundle, compatibleWith: nil)
+        flashOffImage = fusumaFlashOffImage != nil ? fusumaFlashOffImage : UIImage(named: "flash_off", in: bundle, compatibleWith: nil)
+        let flipImage = fusumaFlipImage != nil ? fusumaFlipImage : UIImage(named: "rotate_camera", in: bundle, compatibleWith: nil)
+        let shotImage = fusumaShotImage != nil ? fusumaShotImage : UIImage(named: "snap", in: bundle, compatibleWith: nil)
+
+        flashButton.tintColor = fusumaTintColor
+        flipButton.tintColor  = fusumaTintColor
+        shotButton.tintColor  = fusumaTintColor
             
-            flashButton.setImage(flashOffImage?.withRenderingMode(.alwaysTemplate), for: UIControlState())
-            flipButton.setImage(flipImage?.withRenderingMode(.alwaysTemplate), for: UIControlState())
-            shotButton.setImage(shotImage?.withRenderingMode(.alwaysTemplate), for: UIControlState())
-        } else {
-            flashButton.setImage(flashOffImage, for: UIControlState())
-            flipButton.setImage(flipImage, for: UIControlState())
-            shotButton.setImage(shotImage, for: UIControlState())
-        }
+        flashButton.setImage(flashOffImage, for: UIControlState())
+        flipButton.setImage(flipImage, for: UIControlState())
+        shotButton.setImage(shotImage, for: UIControlState())
 
         
         self.isHidden = false

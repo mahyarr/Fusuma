@@ -45,15 +45,15 @@ extension FusumaDelegate {
     func fusumaClosed() {}
 }
 
-public var fusumaBaseTintColor   = UIColor.hex("#FFFFFF", alpha: 1.0)
-public var fusumaTintColor       = UIColor.hex("#F38181", alpha: 1.0)
-public var fusumaBackgroundColor = UIColor.hex("#3B3D45", alpha: 1.0)
+public var fusumaBaseTintColor   = UIColor.hex("#000000", alpha: 1.0)
+public var fusumaTintColor       = UIColor.hex("#23BB85", alpha: 1.0)
+public var fusumaBackgroundColor = UIColor.hex("#F2F2F2", alpha: 1.0)
+public var fusumaTabBarSelectedColor = UIColor.hex("#000000", alpha: 1.0)
+public var fusumaTabBarUnselectedColor = UIColor.hex("#808080", alpha: 1.0)
 
-public var fusumaAlbumImage : UIImage? = nil
-public var fusumaCameraImage : UIImage? = nil
-public var fusumaVideoImage : UIImage? = nil
-public var fusumaCheckImage : UIImage? = nil
-public var fusumaCloseImage : UIImage? = nil
+public var fusumaCloseButtonTitle = "Close"
+public var fusumaSelectButtonTitle = "Select"
+
 public var fusumaFlashOnImage : UIImage? = nil
 public var fusumaFlashOffImage : UIImage? = nil
 public var fusumaFlipImage : UIImage? = nil
@@ -64,12 +64,10 @@ public var fusumaVideoStopImage : UIImage? = nil
 
 public var fusumaCropImage: Bool = true
 
-public var fusumaCameraRollTitle = "CAMERA ROLL"
-public var fusumaCameraTitle = "PHOTO"
-public var fusumaVideoTitle = "VIDEO"
+public var fusumaCameraRollTitle = "Library"
+public var fusumaCameraTitle = "Camera"
+public var fusumaVideoTitle = "Video"
 public var fusumaTitleFont = UIFont(name: "AvenirNext-DemiBold", size: 15)
-
-public var fusumaTintIcons : Bool = true
 
 public enum FusumaModeOrder {
     case cameraFirst
@@ -83,7 +81,7 @@ public enum FusumaMode {
 }
 
 //@objc public class FusumaViewController: UIViewController, FSCameraViewDelegate, FSAlbumViewDelegate {
-public final class FusumaViewController: UIViewController {
+public class FusumaViewController: UIViewController {
 
     public var hasVideo = false
     public var cropHeightRatio: CGFloat = 1
@@ -135,68 +133,32 @@ public final class FusumaViewController: UIViewController {
         videoView.delegate = self
 
         menuView.backgroundColor = fusumaBackgroundColor
-        menuView.addBottomBorder(UIColor.black, width: 1.0)
-        
-        let bundle = Bundle(for: self.classForCoder)
-        
+
         // Get the custom button images if they're set
-        let albumImage = fusumaAlbumImage != nil ? fusumaAlbumImage : UIImage(named: "ic_insert_photo", in: bundle, compatibleWith: nil)
-        let cameraImage = fusumaCameraImage != nil ? fusumaCameraImage : UIImage(named: "ic_photo_camera", in: bundle, compatibleWith: nil)
-        
-        let videoImage = fusumaVideoImage != nil ? fusumaVideoImage : UIImage(named: "ic_videocam", in: bundle, compatibleWith: nil)
+        libraryButton.setTitle(fusumaCameraRollTitle, for: .normal)
+        libraryButton.setTitleColor(fusumaTabBarUnselectedColor, for: .normal)
+        libraryButton.setTitleColor(fusumaTabBarSelectedColor, for: .selected)
+        libraryButton.adjustsImageWhenHighlighted = false
 
+        cameraButton.setTitle(fusumaCameraTitle, for: .normal)
+        cameraButton.setTitleColor(fusumaTabBarUnselectedColor, for: .normal)
+        cameraButton.setTitleColor(fusumaTabBarSelectedColor, for: .selected)
+        cameraButton.adjustsImageWhenHighlighted  = false
         
-        let checkImage = fusumaCheckImage != nil ? fusumaCheckImage : UIImage(named: "ic_check", in: bundle, compatibleWith: nil)
-        let closeImage = fusumaCloseImage != nil ? fusumaCloseImage : UIImage(named: "ic_close", in: bundle, compatibleWith: nil)
+        closeButton.setTitle(fusumaCloseButtonTitle, for: .normal)
+        closeButton.setTitleColor(fusumaBaseTintColor, for: .normal)
+        closeButton.tintColor = fusumaBaseTintColor
         
-        if fusumaTintIcons {
-            
-            libraryButton.setImage(albumImage?.withRenderingMode(.alwaysTemplate), for: UIControlState())
-            libraryButton.setImage(albumImage?.withRenderingMode(.alwaysTemplate), for: .highlighted)
-            libraryButton.setImage(albumImage?.withRenderingMode(.alwaysTemplate), for: .selected)
-            libraryButton.tintColor = fusumaTintColor
-            libraryButton.adjustsImageWhenHighlighted = false
+        videoButton.setTitle(fusumaVideoTitle, for: .normal)
+        videoButton.setTitleColor(fusumaTabBarUnselectedColor, for: .normal)
+        videoButton.setTitleColor(fusumaTabBarSelectedColor, for: .selected)
+        videoButton.tintColor  = fusumaTintColor
 
-            cameraButton.setImage(cameraImage?.withRenderingMode(.alwaysTemplate), for: UIControlState())
-            cameraButton.setImage(cameraImage?.withRenderingMode(.alwaysTemplate), for: .highlighted)
-            cameraButton.setImage(cameraImage?.withRenderingMode(.alwaysTemplate), for: .selected)
-            cameraButton.tintColor  = fusumaTintColor
-            cameraButton.adjustsImageWhenHighlighted  = false
-            
-            closeButton.setImage(closeImage?.withRenderingMode(.alwaysTemplate), for: UIControlState())
-            closeButton.setImage(closeImage?.withRenderingMode(.alwaysTemplate), for: .highlighted)
-            closeButton.setImage(closeImage?.withRenderingMode(.alwaysTemplate), for: .selected)
-            closeButton.tintColor = fusumaBaseTintColor
-            
-            videoButton.setImage(videoImage, for: UIControlState())
-            videoButton.setImage(videoImage, for: .highlighted)
-            videoButton.setImage(videoImage, for: .selected)
-            videoButton.tintColor  = fusumaTintColor
-            videoButton.adjustsImageWhenHighlighted = false
-            
-            doneButton.setImage(checkImage?.withRenderingMode(.alwaysTemplate), for: UIControlState())
-            doneButton.tintColor = fusumaBaseTintColor
-            
-        } else {
-            
-            libraryButton.setImage(albumImage, for: UIControlState())
-            libraryButton.setImage(albumImage, for: .highlighted)
-            libraryButton.setImage(albumImage, for: .selected)
-            libraryButton.tintColor = nil
-            
-            cameraButton.setImage(cameraImage, for: UIControlState())
-            cameraButton.setImage(cameraImage, for: .highlighted)
-            cameraButton.setImage(cameraImage, for: .selected)
-            cameraButton.tintColor = nil
-
-            videoButton.setImage(videoImage, for: UIControlState())
-            videoButton.setImage(videoImage, for: .highlighted)
-            videoButton.setImage(videoImage, for: .selected)
-            videoButton.tintColor = nil
-            
-            closeButton.setImage(closeImage, for: UIControlState())
-            doneButton.setImage(checkImage, for: UIControlState())
-        }
+        videoButton.adjustsImageWhenHighlighted = false
+        
+        doneButton.setTitle(fusumaSelectButtonTitle, for: .normal)
+        doneButton.setTitleColor(fusumaBaseTintColor, for: .normal)
+        doneButton.tintColor = fusumaBaseTintColor
         
         cameraButton.clipsToBounds  = true
         libraryButton.clipsToBounds = true
@@ -210,14 +172,13 @@ public final class FusumaViewController: UIViewController {
         
         titleLabel.textColor = fusumaBaseTintColor
         titleLabel.font = fusumaTitleFont
-            
-//        if modeOrder != .LibraryFirst {
-//            libraryFirstConstraints.forEach { $0.priority = 250 }
-//            cameraFirstConstraints.forEach { $0.priority = 1000 }
-//        }
-        
+
+        if modeOrder != .libraryFirst {
+            libraryFirstConstraints.forEach { $0.priority = 250 }
+            cameraFirstConstraints.forEach { $0.priority = 1000 }
+        }
+
         if !hasVideo {
-            
             videoButton.removeFromSuperview()
             
             self.view.addConstraint(NSLayoutConstraint(
@@ -461,56 +422,11 @@ private extension FusumaViewController {
     }
     
     func dishighlightButtons() {
-        cameraButton.tintColor  = fusumaBaseTintColor
-        libraryButton.tintColor = fusumaBaseTintColor
-        
-        if cameraButton.layer.sublayers?.count > 1 {
-            
-            for layer in cameraButton.layer.sublayers! {
-                
-                if let borderColor = layer.borderColor , UIColor(cgColor: borderColor) == fusumaTintColor {
-                    
-                    layer.removeFromSuperlayer()
-                }
-                
-            }
-        }
-        
-        if libraryButton.layer.sublayers?.count > 1 {
-            
-            for layer in libraryButton.layer.sublayers! {
-                
-                if let borderColor = layer.borderColor , UIColor(cgColor: borderColor) == fusumaTintColor {
-                    
-                    layer.removeFromSuperlayer()
-                }
-                
-            }
-        }
-        
-        if let videoButton = videoButton {
-            
-            videoButton.tintColor = fusumaBaseTintColor
-            
-            if videoButton.layer.sublayers?.count > 1 {
-                
-                for layer in videoButton.layer.sublayers! {
-                    
-                    if let borderColor = layer.borderColor , UIColor(cgColor: borderColor) == fusumaTintColor {
-                        
-                        layer.removeFromSuperlayer()
-                    }
-                    
-                }
-            }
-        }
-        
+        cameraButton.isSelected = false
+        libraryButton.isSelected = false
     }
     
     func highlightButton(_ button: UIButton) {
-        
-        button.tintColor = fusumaTintColor
-        
-        button.addBottomBorder(fusumaTintColor, width: 3)
+        button.isSelected = true
     }
 }
